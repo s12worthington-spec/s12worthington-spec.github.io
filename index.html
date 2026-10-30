@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sam Worthington</title>
+<script>
+  // Apply a saved manual theme before paint so there is no flash.
+  (function(){try{var t=localStorage.getItem('sketch-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Caveat:wght@500;600;700&display=swap">
+<style>
+/* Layout: one notebook column (~42rem) on a sheet of drawing paper / a slate board.
+   Hand-drawn marks are overlaid on elements with Rough.js.
+   ── Tune the look here ── */
+:root{
+  --paper:#f4efe3;            /* drawing paper */
+  --ink:#25221e;              /* charcoal: body text, headings */
+  --ink-soft:#5a5348;         /* lighter charcoal: secondary text, bullets */
+  --mark:#2b2722;             /* drawn lines: boxes, underlines */
+  --pencil:#2d5075;           /* blue pencil: annotations + hover marks */
+  --wash:radial-gradient(120% 70% at 50% 0%, rgba(255,255,255,.4), transparent 65%);
+  --smudge:rgba(40,34,28,.065);
+  --ghost:rgba(40,34,28,.03);
+
+  --stroke-w:1.5;             /* base stroke width (px) */
+  --roughness:1.15;           /* Rough.js roughness */
+  --mark-opacity:.9;
+  --card-opacity:.6;
+  --hatch-opacity:.55;
+  --hover-fill-opacity:.34;
+  --grain-opacity:.55;
+  --stroke-filter:url(#dry-charcoal);
+  --text-filter:url(#text-charcoal);
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .15 0 0 0 0 .13 0 0 0 0 .1 1.5 0 0 0 -.62'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E");
+  --dash:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 10'%3E%3Cpath d='M2 6.4C7 5 12.5 5.8 22 3.4' stroke='black' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+
+  --font-hand:"Caveat","Segoe Print","Bradley Hand",cursive;
+  --font-body:"Alegreya","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --measure:42rem;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1f2a26; --ink:#ece8dc; --ink-soft:#b4bab0; --mark:#e9e5d8; --pencil:#a9cde3;
+    --wash:radial-gradient(90% 55% at 28% 8%, rgba(255,255,255,.035), transparent 70%), radial-gradient(80% 50% at 85% 75%, rgba(0,0,0,.2), transparent 70%);
+    --smudge:rgba(236,232,220,.05); --ghost:rgba(236,232,220,.075);
+    --stroke-w:1.9; --roughness:1.3; --mark-opacity:.86; --card-opacity:.55; --hatch-opacity:.5; --hover-fill-opacity:.3; --grain-opacity:.42;
+    --stroke-filter:url(#dry-chalk); --text-filter:url(#text-chalk);
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .93 0 0 0 0 .91 0 0 0 0 .86 1.5 0 0 0 -.66'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E");
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1f2a26; --ink:#ece8dc; --ink-soft:#b4bab0; --mark:#e9e5d8; --pencil:#a9cde3;
+  --wash:radial-gradient(90% 55% at 28% 8%, rgba(255,255,255,.035), transparent 70%), radial-gradient(80% 50% at 85% 75%, rgba(0,0,0,.2), transparent 70%);
+  --smudge:rgba(236,232,220,.05); --ghost:rgba(236,232,220,.075);
+  --stroke-w:1.9; --roughness:1.3; --mark-opacity:.86; --card-opacity:.55; --hatch-opacity:.5; --hover-fill-opacity:.3; --grain-opacity:.42;
+  --stroke-filter:url(#dry-chalk); --text-filter:url(#text-chalk);
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .93 0 0 0 0 .91 0 0 0 0 .86 1.5 0 0 0 -.66'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E");
+  color-scheme:dark;
+}
+
+html{background:var(--paper)}
+@media (prefers-reduced-motion: no-preference){ html{scroll-behavior:smooth} }
+body{
+  position:relative; isolation:isolate; overflow-x:clip; min-height:100vh;
+  background:var(--wash), var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body); font-size:1.1875rem; line-height:1.68;
+  padding-left:max(20px, env(safe-area-inset-left, 0px));
+  padding-right:max(20px, env(safe-area-inset-right, 0px));
+  padding-block:0;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{ /* paper tooth / board grain */
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background-image:var(--grain); opacity:var(--grain-opacity);
+}
+.atmos{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:-1}
+.smudge{position:absolute; border-radius:50%; background:radial-gradient(closest-side, var(--smudge), transparent)}
+.s1{width:36rem; height:9rem; top:6.5rem; left:calc(50% - 25rem); rotate:-6deg}
+.s2{width:30rem; height:7rem; top:47%; right:-8rem; rotate:5deg}
+.s3{width:32rem; height:8rem; bottom:7rem; left:-6rem; rotate:-3deg}
+.ghost{position:absolute; font-family:var(--font-hand); font-weight:500; color:var(--ghost); white-space:nowrap; font-size:3.4rem; line-height:1}
+.g1{top:31%; left:-1.5rem; rotate:-5deg}
+
+.page{max-width:var(--measure); margin-inline:auto; padding-block:0 3rem}
+a{color:inherit}
+:focus-visible{outline:2px dashed var(--pencil); outline-offset:5px; border-radius:2px}
+
+/* ── nav ── */
+.top{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.25rem 1rem; padding-block:1rem .25rem}
+.top ul{display:flex; flex-wrap:wrap; gap:0 1.15rem; list-style:none; margin:0; padding:0}
+.top a, .toggle{
+  font-family:var(--font-hand); font-size:1.45rem; font-weight:600; line-height:1.4;
+  color:var(--ink-soft); text-decoration:none; padding:0 .15rem;
+}
+.top a:hover, .toggle:hover{color:var(--ink)}
+.toggle{background:none; border:0; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem}
+.toggle svg{width:1.05rem; height:1.05rem}
+
+/* ── hero ── */
+.hero{padding-block:2.4rem .5rem}
+.hero-id{display:flex; flex-wrap:wrap; align-items:center; gap:1.6rem 2.4rem}
+.hero-text{flex:1 1 20rem; min-width:0}
+.portrait{margin:0; padding:.4rem; width:9.5rem; rotate:-1.6deg}
+.portrait img{display:block; width:100%; height:auto; filter:grayscale(.3) sepia(.08)}
+@media (min-width:700px){ .portrait{order:2; width:11.5rem; rotate:1.8deg} .name{white-space:nowrap} }
+.name{font-family:var(--font-hand); font-weight:700; font-size:clamp(3.1rem, 11vw, 4.4rem); line-height:.95; margin:0; letter-spacing:.01em}
+.name .txt{filter:var(--text-filter)}
+.reach{display:flex; flex-wrap:wrap; align-items:center; gap:1.2rem 1.8rem}
+.email-line{display:flex; flex-wrap:wrap; align-items:baseline; gap:.1rem .6rem; margin:0; font-size:1.12rem}
+.email-line .label{font-family:var(--font-hand); font-size:1.4rem; font-weight:600; color:var(--ink-soft)}
+
+/* ── links + buttons ── */
+.ink{text-decoration:underline; text-decoration-thickness:1px; text-decoration-color:color-mix(in srgb, currentColor 40%, transparent); text-underline-offset:.22em; transition:text-decoration-color .2s}
+.ink:hover, .ink:focus-visible{text-decoration-color:transparent}
+.copy{background:none; border:0; cursor:pointer; color:var(--ink-soft); font-family:var(--font-hand); font-size:1.25rem; font-weight:600; padding:0 .2rem}
+.copy:hover{color:var(--ink)}
+.btn{
+  display:inline-block; font-family:var(--font-hand); font-weight:700; font-size:1.8rem; line-height:1.1;
+  color:var(--ink); text-decoration:none; padding:.55rem 1.45rem .65rem;
+  transition:transform .2s ease;
+}
+.btn:hover{transform:translate(-1px,-2px) rotate(-.7deg)}
+.btn:active{transform:translate(2px,2px)}
+
+/* ── sections ── */
+main > section{scroll-margin-top:1rem}
+main > section{padding-block:3.4rem 0}
+h2{font-family:var(--font-hand); font-weight:700; font-size:clamp(2.3rem, 6.5vw, 2.8rem); line-height:1.05; margin:0 0 1.15rem; text-wrap:balance}
+h2 > span, h2 > a{display:inline-block}
+.h-link{color:inherit; text-decoration:none; transition:color .2s}
+.h-link:hover, .h-link:focus-visible{color:var(--pencil)}
+p{margin:0}
+.list{list-style:none; margin:0; padding:0; display:grid; gap:.65rem}
+.list > li{position:relative; padding-left:1.8rem; text-wrap:pretty}
+.list > li::before{
+  content:""; position:absolute; left:.05rem; top:.8em; width:1.1rem; height:.5rem; background:var(--ink-soft);
+  -webkit-mask:var(--dash) center/contain no-repeat; mask:var(--dash) center/contain no-repeat;
+}
+.list > li:nth-child(even)::before{transform:rotate(-7deg) scaleX(.88)}
+
+/* cards */
+.cards{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr; gap:1.6rem 1.7rem}
+.card{padding:1.05rem 1.3rem 1.15rem; min-width:0; text-wrap:pretty}
+.card strong{font-weight:700}
+@media (min-width:640px){
+  .cards{grid-template-columns:1fr 1fr}
+  .card.wide{grid-column:1 / -1}
+}
+.foot{margin-top:4.5rem; font-family:var(--font-hand); font-size:1.25rem; color:var(--ink-soft)}
+
+/* ── drawn marks (Rough.js overlays) ── */
+[data-sk]{position:relative; isolation:isolate}
+.sk{position:absolute; pointer-events:none; overflow:visible; z-index:-1; color:var(--mark); opacity:var(--mark-opacity); filter:var(--stroke-filter)}
+.sk.pencil{color:var(--pencil)}
+.card > .sk{opacity:var(--card-opacity)}
+.sk .shade{opacity:var(--hatch-opacity)}
+.sk .fillmark{color:var(--pencil); opacity:var(--hover-fill-opacity)}
+.hov path{transition:stroke-dashoffset .34s cubic-bezier(.3,.1,.3,1)}
+:is(a,button):is(:hover,:focus-visible) > .sk .hov path{stroke-dashoffset:0 !important}
+@media (prefers-reduced-motion: reduce){
+  .hov path{transition:none}
+  .btn{transition:none}
+  .btn:hover{transform:none}
+}
+/* If Rough.js fails to load, fall back to quiet CSS lines. */
+.no-rough .card{outline:1.5px solid color-mix(in srgb, var(--mark) 45%, transparent)}
+.no-rough .btn{border:2px solid var(--mark); box-shadow:4px 4px 0 var(--ink-soft)}
+.no-rough :is(h2 > span, h2 > a){border-bottom:2px solid var(--mark)}
+</style>
+</head>
+<body>
+
+<!-- Stroke + text textures: dry broken edge for charcoal (light) and chalk (dark) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="dry-charcoal" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="4" result="warp"/>
+    <feDisplacementMap in="SourceGraphic" in2="warp" scale="2" xChannelSelector="R" yChannelSelector="G" result="wob"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="9" result="tooth"/>
+    <feColorMatrix in="tooth" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2.6 0 0 0 -.5" result="mask"/>
+    <feComposite in="wob" in2="mask" operator="in"/>
+  </filter>
+  <filter id="dry-chalk" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="2" result="warp"/>
+    <feDisplacementMap in="SourceGraphic" in2="warp" scale="2.4" xChannelSelector="R" yChannelSelector="G" result="wob"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="2" seed="7" result="tooth"/>
+    <feColorMatrix in="tooth" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  3.6 0 0 0 -1.08" result="mask"/>
+    <feComposite in="wob" in2="mask" operator="in"/>
+  </filter>
+  <filter id="text-charcoal" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="5" result="t"/>
+    <feColorMatrix in="t" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2 0 0 0 -.15" result="m"/>
+    <feComposite in="SourceGraphic" in2="m" operator="in"/>
+  </filter>
+  <filter id="text-chalk" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="3" result="t"/>
+    <feColorMatrix in="t" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  2.8 0 0 0 -.62" result="m"/>
+    <feComposite in="SourceGraphic" in2="m" operator="in"/>
+  </filter>
+</svg>
+
+<div class="atmos" aria-hidden="true">
+  <span class="smudge s1"></span><span class="smudge s2"></span><span class="smudge s3"></span>
+  <span class="ghost g1">P(H | E) = P(E | H) · P(H) / P(E)</span>
+</div>
+
+<div class="page">
+  <header class="top">
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#about" data-sk="ring">About</a></li>
+        <li><a href="#talk" data-sk="ring">Talk</a></li>
+        <li><a href="#debate" data-sk="ring">Debate</a></li>
+        <li><a href="#interests" data-sk="ring">Interests</a></li>
+        <li><a href="#contact" data-sk="ring">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="toggle" id="theme" type="button" data-sk="ring">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10.2 2.4C5.6 2.2 2.3 5.7 2.5 10.1c.2 4.3 3.6 7.6 7.8 7.5 4.3-.2 7.4-3.6 7.3-7.8C17.4 5.6 14.4 2.6 10.2 2.4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M10.2 2.6c.3 5 .1 10 .1 14.9 4-.3 7.1-3.6 7-7.7C17.2 5.8 14.2 2.8 10.2 2.6z" fill="currentColor"/></svg>
+      <span class="t-label">Theme</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="name">
+      <div class="hero-id">
+        <figure class="portrait" data-sk="box"><img src="data:image/webp;base64,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" alt="Photo of Sam Worthington" width="220" height="223"></figure>
+        <div class="hero-text">
+          <h1 class="name" id="name"><span data-sk="scribble"><span class="txt">Sam Worthington</span></span></h1>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <h2><span data-sk="underline">About</span></h2>
+      <ul class="list">
+        <li>I’m a current student at Princeton University studying Math and English. I live in NYC.</li>
+        <li>I’ve been deep in the EA and AI safety rabbit hole for about four years and have done some community organizing work. I am a member of PAIA (Princeton AI Alignment) and PEA (Princeton Effective Altruism).</li>
+        <li>I’m trying to have the most impact I can. Right now, this means I think AI safety is the most important issue for me to work on. My background is in agent foundations, but I am primarily looking for work related to communications and policy.</li>
+        <li>I love explaining and teaching complicated ideas.</li>
+        <li>I really enjoy working on problems that may be unsolvable or extremely abstract. I think this is what connects my intellectual interest in agent foundations and mathematics with my love of art and writing (especially designing magic).</li>
+        <li>I’ve also taught a class for fifth graders about Bayesian reasoning, normative ethics, and AI alignment for the past two years.</li>
+      </ul>
+    </section>
+
+    <section id="talk">
+      <h2><a class="h-link" data-sk="underline" href="https://calendly.com/sw0078-princeton/30min" target="_blank" rel="noopener" title="Book a 30-minute chat">Talk to me about</a></h2>
+      <ul class="cards">
+        <li class="card wide" data-sk="box"><strong data-sk="double">AI safety</strong>: communications, policy, foundations, governance. I also always love hearing whenever people tell me about the technical research they are doing.</li>
+        <li class="card" data-sk="box">Literature, poetry, art, music, magic!</li>
+        <li class="card" data-sk="box">Game design and recommendations. Right now I’ve been playing a lot of <i>Old King’s Crown</i>, <i>Gloomhaven</i>, and <i>Heart</i>.</li>
+        <li class="card wide" data-sk="box">Whatever niche thing you happen to be obsessed with at the moment</li>
+      </ul>
+    </section>
+
+    <section id="debate">
+      <h2><span data-sk="underline">Debate</span></h2>
+      <ul class="list">
+        <li>Former co-captain of the Dalton School Parliamentary Debate team (2025–2026)</li>
+        <li>Ranked 3rd in the country (2025–2026)</li>
+        <li>Current private debate tutor. Please reach out if you have questions about this.</li>
+      </ul>
+    </section>
+
+    <section id="interests">
+      <h2><span data-sk="underline">Other interests</span></h2>
+      <ul class="cards">
+        <li class="card" data-sk="box">Favorite works of literature: <cite><i>Life: A User’s Manual</i></cite>, <cite><i>Ulysses</i></cite>, <cite><i>The Autumn of the Patriarch</i></cite></li>
+        <li class="card" data-sk="box">Magician. Information on shows is forthcoming. If you want magic recommendations, reach out!</li>
+        <li class="card" data-sk="box">Writing: a novel about AI alignment is forthcoming!</li>
+        <li class="card" data-sk="box">Theater, specifically sound design</li>
+        <li class="card" data-sk="box">Hiking and skiing</li>
+        <li class="card" data-sk="box">Euclid</li>
+      </ul>
+    </section>
+
+    <section id="contact">
+      <h2><span data-sk="underline">Contact</span></h2>
+      <div class="reach">
+        <a class="btn" data-sk="cta" href="https://calendly.com/sw0078-princeton/30min" target="_blank" rel="noopener">Book a 30-minute chat</a>
+        <p class="email-line"><span class="label">Email</span>
+          <a class="ink" data-sk="link" href="mailto:srsworthington1@gmail.com">srsworthington1@gmail.com</a>
+          <button class="copy" type="button" data-copy="srsworthington1@gmail.com" data-sk="link">copy</button>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">© 2026 Sam Worthington</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.js"></script>
+<script>
+(function(){
+  const html = document.documentElement;
+
+  /* ── theme toggle ── */
+  const KEY = 'sketch-theme';
+  const mq = matchMedia('(prefers-color-scheme: dark)');
+  const isDark = () => html.dataset.theme ? html.dataset.theme === 'dark' : mq.matches;
+  const tbtn = document.getElementById('theme');
+  function syncToggle(){
+    const d = isDark();
+    tbtn.querySelector('.t-label').textContent = d ? 'Light mode' : 'Dark mode';
+    tbtn.setAttribute('aria-label', d ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  syncToggle();
+  tbtn.addEventListener('click', () => {
+    const next = isDark() ? 'light' : 'dark';
+    html.dataset.theme = next;
+    try { localStorage.setItem(KEY, next) } catch(e) {}
+    syncToggle(); drawAll();
+  });
+  mq.addEventListener && mq.addEventListener('change', () => { syncToggle(); drawAll(); });
+
+  /* ── copy email ── */
+  document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
+    const label = t => { b.lastChild.textContent = t; };
+    const selectIt = () => {
+      const r = document.createRange(); r.selectNodeContents(b.previousElementSibling);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); label('selected');
+    };
+    const done = () => { label('copied'); setTimeout(() => label('copy'), 1600); };
+    try { navigator.clipboard.writeText(b.dataset.copy).then(done, selectIt); } catch(e) { selectIt(); }
+  }));
+
+  /* ── hand-drawn marks ── */
+  const rough = window.rough;
+  if (!rough) { html.classList.add('no-rough'); return; }
+  const NS = 'http://www.w3.org/2000/svg';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const cssNum = (n, d) => parseFloat(getComputedStyle(html).getPropertyValue(n)) || d;
+  let SW = 1.5, RO = 1.15;
+
+  // Small seeded PRNG so every redraw (resize, theme switch) gives the same drawing.
+  const rnd = seed => { let s = (seed * 9301 + 49297) % 233280 || 1; return () => (s = s * 16807 % 2147483647) / 2147483647; };
+
+  function overlay(host, p, cls = ''){
+    const w = host.offsetWidth, h = host.offsetHeight;
+    let svg = host.querySelector(':scope > svg.sk');
+    if (!svg){ svg = document.createElementNS(NS, 'svg'); svg.setAttribute('aria-hidden', 'true'); host.prepend(svg); }
+    svg.setAttribute('class', ('sk ' + cls).trim());
+    svg.replaceChildren();
+    const W = w + 2*p, H = h + 2*p;
+    svg.setAttribute('width', W); svg.setAttribute('height', H); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.style.left = svg.style.top = (-p) + 'px';
+    return { svg, rc: rough.svg(svg), w, h, p };
+  }
+  function group(svg, cls){ const g = document.createElementNS(NS, 'g'); if (cls) g.setAttribute('class', cls); svg.append(g); return g; }
+
+  // Split Rough's multi-subpath paths so each stroke can be dashed/animated alone,
+  // and vary width + opacity per stroke like uneven pressure on a stick of charcoal.
+  function finish(g, r){
+    g.querySelectorAll('path').forEach(p => {
+      const parts = p.getAttribute('d').split(/(?=M)/).filter(s => s.trim());
+      const base = parseFloat(p.getAttribute('stroke-width')) || SW;
+      parts.forEach(d => {
+        const q = p.cloneNode();
+        q.setAttribute('d', d);
+        q.setAttribute('stroke-width', (base * (0.72 + r()*0.6)).toFixed(2));
+        q.setAttribute('stroke-opacity', (0.6 + r()*0.4).toFixed(2));
+        q.setAttribute('stroke-linecap', 'round');
+        p.before(q);
+      });
+      p.remove();
+    });
+    return g;
+  }
+
+  // Draw-in once, the first time each mark scrolls into view.
+  const seen = new WeakSet(), pending = new Map();
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ io.unobserve(e.target); reveal(e.target); }
+  }), { rootMargin: '0px 0px -6% 0px' }) : null;
+
+  function arm(key, groups){
+    if (!io || reduce.matches || seen.has(key)) return;
+    const paths = groups.flatMap(g => [...g.querySelectorAll('path')]);
+    paths.forEach(p => { const L = p.getTotalLength() + 2; p.dataset.len = L; p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
+    pending.set(key, paths); io.observe(key);
+  }
+  function reveal(key){
+    seen.add(key);
+    const paths = pending.get(key) || []; pending.delete(key);
+    const total = paths.reduce((s, p) => s + +p.dataset.len, 0);
+    const speed = Math.max(total / 800, 1.5); // px per ms; keeps every drawing under ~0.8s
+    let t = 0;
+    paths.forEach(p => {
+      const d = Math.max(+p.dataset.len / speed, 60);
+      p.style.transition = `stroke-dashoffset ${d}ms cubic-bezier(.45,.1,.4,1) ${t}ms`;
+      t += d * 0.8;
+    });
+    requestAnimationFrame(() => requestAnimationFrame(() => paths.forEach(p => p.style.strokeDashoffset = '0')));
+  }
+  // Hover marks: drawn but hidden; CSS sketches them in on :hover / :focus-visible.
+  function armHover(g){
+    g.classList.add('hov');
+    [...g.querySelectorAll('path')].forEach((p, i) => {
+      const L = p.getTotalLength() + 2;
+      p.style.strokeDasharray = L; p.style.strokeDashoffset = L; p.style.transitionDelay = (i * 22) + 'ms';
+    });
+  }
+
+  function boxLines(rc, g, r, x, y, w, h, sw, seed){
+    const o = () => r()*7 - 1.5, j = () => (r() - .5) * 3.4;
+    [[x-o(), y+j(), x+w+o(), y+j()], [x+w+j(), y-o(), x+w+j(), y+h+o()],
+     [x+w+o(), y+h+j(), x-o(), y+h+j()], [x+j(), y+h+o(), x+j(), y-o()]]
+      .forEach((l, k) => g.append(rc.line(...l, { roughness: RO*.85, bowing: 1.4, stroke: 'currentColor', strokeWidth: sw, seed: seed + k, disableMultiStroke: r() < .4 })));
+  }
+
+  const K = {
+    box(el, i){
+      const { svg, rc, w, h, p } = overlay(el, 12), r = rnd(i*131 + 7), g = group(svg);
+      boxLines(rc, g, r, p, p, w, h, SW*.9, i*10 + 1);
+      arm(el, [finish(g, r)]);
+    },
+    cta(el, i){
+      const { svg, rc, w, h, p } = overlay(el, 16), r = rnd(i*71 + 3);
+      const fill = group(svg, 'fillmark');
+      fill.append(rc.rectangle(p+5, p+5, w-10, h-10, { fill: 'currentColor', fillStyle: 'zigzag', hachureGap: 8, hachureAngle: -35, fillWeight: SW*.9, stroke: 'none', roughness: RO*1.2, seed: i + 40 }));
+      armHover(finish(fill, r));
+      const sh = group(svg, 'shade'), d = 6, x = p, y = p;
+      sh.append(rc.polygon([[x+w, y+d], [x+w+d, y+d], [x+w+d, y+h+d], [x+d, y+h+d], [x+d, y+h], [x+w, y+h]],
+        { fill: 'currentColor', fillStyle: 'hachure', hachureGap: 3.4, hachureAngle: -50, fillWeight: SW*.55, stroke: 'none', roughness: RO*.5, seed: i + 90 }));
+      const g = group(svg);
+      boxLines(rc, g, r, p, p, w, h, SW*1.3, i*10 + 3);
+      arm(el, [finish(g, r), finish(sh, r)]);
+    },
+    underline(el, i){
+      const { svg, rc, w, h, p } = overlay(el, 14), r = rnd(i*53 + 11), g = group(svg);
+      const y = p + h*.9, x0 = p - 5, x1 = p + w + 8, dx = x1 - x0;
+      g.append(rc.curve([[x0, y + r()*2], [x0 + dx*.35, y + 2 + r()*2], [x0 + dx*.7, y - 1 + r()*2], [x1, y - 2 - r()*3]],
+        { roughness: RO*.6, stroke: 'currentColor', strokeWidth: SW*1.15, seed: i + 5 }));
+      arm(el, [finish(g, r)]);
+    },
+    scribble(el, i){
+      const { svg, rc, w, h, p } = overlay(el, 18), r = rnd(i*7 + 19), g = group(svg);
+      const y = p + h*.94, x0 = p - 6, x1 = p + w + 14;
+      g.append(rc.curve([[x0, y+2], [x0 + (x1-x0)*.45, y+4], [x1, y-3]], { roughness: RO*.7, stroke: 'currentColor', strokeWidth: SW*1.7, seed: i + 1 }));
+      g.append(rc.curve([[x1 - 10, y+4], [x0 + (x1-x0)*.55, y+9], [x0 + (x1-x0)*.18, y+11]], { roughness: RO*.7, stroke: 'currentColor', strokeWidth: SW*1.3, seed: i + 2, disableMultiStroke: true }));
+      arm(el, [finish(g, r)]);
+    },
+    double(el, i){
+      const { svg, rc, w, h, p } = overlay(el, 10, 'pencil'), r = rnd(i*41 + 2), g = group(svg);
+      const y = p + h - 1;
+      g.append(rc.line(p - 2, y, p + w + 4, y - 1.5, { roughness: RO*.7, stroke: 'currentColor', strokeWidth: SW, seed: i + 1, disableMultiStroke: true }));
+      g.append(rc.line(p + 3, y + 4, p + w + 1, y + 3, { roughness: RO*.7, stroke: 'currentColor', strokeWidth: SW*.85, seed: i + 2, disableMultiStroke: true }));
+      arm(el, [finish(g, r)]);
+    },
+    ring(el, i){
+      const { svg, rc, w, h, p } = overlay(el, 14, 'pencil'), r = rnd(i*29 + 1), g = group(svg);
+      g.append(rc.ellipse(p + w/2, p + h/2 + 1, w + 18, h + 4, { roughness: RO*1.2, stroke: 'currentColor', strokeWidth: SW*.95, seed: i + 2 }));
+      armHover(finish(g, r));
+    },
+    link(el, i){
+      const { svg, rc, w, h, p } = overlay(el, 8, 'pencil'), r = rnd(i*13 + 4), g = group(svg);
+      const y = p + h - 2;
+      g.append(rc.curve([[p - 2, y], [p + w*.5, y + 1.6], [p + w + 3, y - 1]], { roughness: RO*.7, stroke: 'currentColor', strokeWidth: SW*1.05, seed: i + 1 }));
+      armHover(finish(g, r));
+    }
+  };
+
+
+  function drawAll(){
+    SW = cssNum('--stroke-w', 1.5); RO = cssNum('--roughness', 1.15);
+    document.querySelectorAll('[data-sk]').forEach((el, i) => { if (el.offsetWidth && K[el.dataset.sk]) K[el.dataset.sk](el, i + 1); });
+  }
+
+  // Wait for the fonts (or 1.2s) so first-draw sizes are final.
+  const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
+  Promise.race([fontsReady, new Promise(r => setTimeout(r, 1200))]).then(() => {
+    drawAll();
+    document.fonts && document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', drawAll);
+  });
+  let lastW = innerWidth, tmr;
+  addEventListener('resize', () => {
+    clearTimeout(tmr);
+    tmr = setTimeout(() => { if (innerWidth !== lastW){ lastW = innerWidth; drawAll(); } }, 150);
+  });
+})();
+</script>
+</body>
+</html>
